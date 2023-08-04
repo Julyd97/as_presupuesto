@@ -31,6 +31,9 @@ class SourceListCreateAPIView(ListCreateAPIView):
     permission_classes = (IsAuthenticated, IsOwner)
     serializer_class = SourceSerializer
 
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
 class SourceRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Source.objects.all()
     permission_classes = (IsAuthenticated, IsOwner)

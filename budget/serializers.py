@@ -1,10 +1,10 @@
 from rest_framework import serializers
 from .models import *
 
-class SourceSerializer(serializers.HyperlinkedModelSerializer):
+class SourceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Source
-        fields = ['code','name']
+        fields = ['code', 'name','user']
 
 class BudgetItemSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
