@@ -38,7 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework_simplejwt',
+    'user',
     'school',
+    'budget',
+
 ]
 
 MIDDLEWARE = [
@@ -126,7 +130,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Change user model
 
-AUTH_USER_MODEL = 'school.User' #TODO implements user model accross 
+AUTH_USER_MODEL = 'user.User' #TODO implements user model accross 
 
 
 #Rest framework settings
@@ -134,9 +138,14 @@ AUTH_USER_MODEL = 'school.User' #TODO implements user model accross
 REST_FRAMEWORK = { 
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        #'user.custom_auth.BlacklistJWTAuthentication',
     ],
 }
 
+SIMPLE_JWT = {
+    'TOKEN_BLACKLIST_ENABLED': True,
+    'TOKEN_BLACKLIST_MODEL': 'user.BlacklistedRefreshToken',
+}
 # Django money settings
 
 CURRENCIES = ('COP',)
