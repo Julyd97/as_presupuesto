@@ -44,23 +44,3 @@ class SourceRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
         instance = self.get_object()
         self.perform_destroy(instance)
         return Response({'detail': f'{str(request)} has been deleted.'})
-
-# from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
-# from rest_framework.response import Response
-# from rest_framework import status
-# from .models import Item  # Replace 'Item' with your model name
-# from .serializers import ItemSerializer  # Replace with your serializer
-
-#  class ItemListCreateAPIView(ListCreateAPIView):
-#     queryset = Item.objects.all()
-#     serializer_class = ItemSerializer
-
-# class ItemRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
-#     queryset = Item.objects.all()
-#     serializer_class = ItemSerializer
-#     lookup_field = 'pk'  # Replace 'pk' with the field used for item ID in the URL
-
-#     def delete(self, request, *args, **kwargs):
-#         instance = self.get_object()
-#         self.perform_destroy(instance)
-#         return Response({"detail": "Item deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
