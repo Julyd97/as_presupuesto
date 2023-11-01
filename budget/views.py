@@ -63,6 +63,10 @@ class BudgetItemRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
         Override default method. Check if item is protected
         """
         instance = self.get_object()
+        print(instance.id)
+        associate_budget_account = BudgetAccount.objects.filter(id_budget_item = instance.id).first()
+        if associate_budget_account != None:
+            raise ItemProtected()
         try:
             self.perform_destroy(instance)
             data = {'message': 'The item was deleted successful'}

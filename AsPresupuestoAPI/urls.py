@@ -21,4 +21,5 @@ urlpatterns = [
     path('api/auth/', include('user.urls')),
     path('api/school/',include('school.urls')),
     path('api/budget/', include('budget.urls')),
+    path('api/budgetflow/', include('budget_flow_app.urls')),
 ]

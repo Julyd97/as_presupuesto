@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'user',
     'school',
     'budget',
+    'budget_flow_app',
 
 ]
 
@@ -79,12 +80,25 @@ WSGI_APPLICATION = 'AsPresupuestoAPI.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'mydb',         # Name of your PostgreSQL database
+        'USER': 'julyd',       # Your PostgreSQL username
+        'PASSWORD': 'julyd',  # Your PostgreSQL password
+        'HOST': 'localhost',    # Host where PostgreSQL is running (usually 'localhost')
+        'PORT': '',             # Leave empty to use the default PostgreSQL port (5432)
     }
 }
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 
 # Password validation
