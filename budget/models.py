@@ -10,7 +10,7 @@ class Source(UserBase):
 
 class BudgetItem(UserBase):
     code = models.CharField(('code'), max_length=50)
-    is_income = models.CharField(('is income'), max_length=200)
+    is_income = models.BooleanField(('is income'), max_length=200)
     name = models.CharField(('name'), max_length=100)
     parent = models.ForeignKey('self', null=True, on_delete=models.PROTECT, related_name='children')
 

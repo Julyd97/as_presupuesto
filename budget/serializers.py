@@ -73,6 +73,6 @@ class BudgetAccountSerializer(serializers.ModelSerializer):
         print(current_budget_item)
         print(current_source)
         if current_budget_item!=None and current_source!=None :
-            if current_budget_item.is_income == 'yes' and new_budgetaccount != None:
+            if current_budget_item.is_income == True and new_budgetaccount != None:
                 raise ValidationError('The budget item already had a budget account') # budget items its an income so must have just 1 budget account
         return data
