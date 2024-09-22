@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.db.models.deletion import ProtectedError
+from django.db import IntegrityError
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework import generics, status, viewsets
 from rest_framework.views import APIView
@@ -21,8 +22,18 @@ class SourceListCreateAPIView(ListCreateAPIView):
         user = self.request.user
         return Source.objects.filter(user = user)
     
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+    # def perform_create(self, serializer):
+    #     serializer.save(user=self.request.user)
+
+    def post(self, request):
+        serializer = SourceSerializer(data = request.data, context={'request': request})
+        if serializer.is_valid():
+            try:
+                serializer.save(user=self.request.user)  # Save the new item
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            except IntegrityError:
+                return Response('The source already exist.')
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class SourceRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Source.objects.all()
