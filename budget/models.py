@@ -5,8 +5,11 @@ from school.models import School
 # Create your models here.
 
 class Source(UserBase):
-    code = models.CharField(('code'), unique=True, max_length=50)
+    code = models.CharField(('code'), max_length=50)
     name = models.CharField(('name'), max_length=100)
+
+    class Meta:
+        unique_together = ['user_id', 'code']
 
 class BudgetItem(UserBase):
     code = models.CharField(('code'), max_length=50)
