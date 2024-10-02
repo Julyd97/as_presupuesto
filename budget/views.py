@@ -32,7 +32,7 @@ class SourceListCreateAPIView(ListCreateAPIView):
                 serializer.save(user=self.request.user)  # Save the new item
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             except IntegrityError:
-                return Response('The source already exist.')
+                return Response('The source already exist.', status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class SourceRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
