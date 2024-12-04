@@ -53,7 +53,7 @@ class BudgetItemListCreateAPIView(ListCreateAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        return BudgetItem.objects.filter(user = user)
+        return BudgetItem.objects.filter(user = user).order_by('code')
     
     def post(self, request):
         serializer = BudgetItemSerializer(data = request.data, context={'request': request})
