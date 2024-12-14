@@ -1,7 +1,8 @@
 from rest_framework import serializers
 from django.core.exceptions import ValidationError
 from rest_framework.fields import CurrentUserDefault
-from .models import *
+
+from .models import BudgetAccount, BudgetItem, Source
 
 class SourceSerializer(serializers.ModelSerializer):
     class Meta:
@@ -13,9 +14,12 @@ class BudgetItemSerializer(serializers.ModelSerializer):
         read_only=True,
         default=serializers.CurrentUserDefault()
     )
+    children = serializers.SerializerMethodField()
+
     class Meta:
         model = BudgetItem
-        fields = '__all__'
+        fields = [ 'id', 'user', 'code','name', 'is_income', 'parent', 'children']
+        # fields = '__all__'
 
     def update(self, instance, validated_data):
         # Exclude changes to the 'parent and is_income' field
@@ -29,10 +33,10 @@ class BudgetItemSerializer(serializers.ModelSerializer):
         id_parent = data.get('parent')
         user = self.context['request'].user
         associate_budget_account = BudgetAccount.objects.filter(id_budget_item = id_parent).first()
-        print(associate_budget_account)
+        print(id_parent.is_income)
         if id_parent != None:
             parentBudgetItem = BudgetItem.objects.filter(id = id_parent.id, user = user).first()
-            print(parentBudgetItem.is_income)
+            print(parentBudgetItem)
             
             if parentBudgetItem == None:
                 raise ValidationError("Parent item not found")
@@ -41,6 +45,14 @@ class BudgetItemSerializer(serializers.ModelSerializer):
         if associate_budget_account != None:
             raise ValidationError("Parent item already have a budget account associate and cant have childs")
         return data
+    
+    def get_children(self, obj):
+        if not isinstance(obj, BudgetItem):
+            print(obj)
+            raise TypeError(f"Expected a budgetitem instance, got {type(obj).__name__}")
+        
+        children = obj.children.all()  # Access related children
+        return BudgetItemSerializer(children, many=True).data
         
         
 

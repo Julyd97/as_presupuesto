@@ -6,7 +6,7 @@ from rest_framework import generics, status, viewsets
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-
+from rest_framework.renderers import JSONRenderer
 
 from .models import Source, BudgetItem, BudgetAccount
 from .serializers import SourceSerializer, BudgetItemSerializer, BudgetAccountSerializer
@@ -53,10 +53,20 @@ class BudgetItemListCreateAPIView(ListCreateAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        return BudgetItem.objects.filter(user = user).order_by('code')
+        # return BudgetItem.objects.filter(user = user).order_by('code')
+        root_categories = BudgetItem.objects.filter(user = user).filter(parent=None).order_by('code')
+        # serializer = BudgetItemSerializer(root_categories, many=True)
+        # print(serializer.data)
+        # response = Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+        # response.accepted_renderer = JSONRenderer()
+        # response.accepted_media_type = "application/json"
+        # response.renderer_context = {}
+        # response.render()
+        return root_categories
     
     def post(self, request):
         serializer = BudgetItemSerializer(data = request.data, context={'request': request})
+        print(request.data)
         if serializer.is_valid():
             serializer.save(user=self.request.user)  # Save the new item
             return Response(serializer.data, status=status.HTTP_201_CREATED)
